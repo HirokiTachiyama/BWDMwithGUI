@@ -1,6 +1,11 @@
-# BWDMwithGUI
-***
+# BWDMwithGUI  
 ## Boundary Value/Vienna Development Method with Graphical User Interface
+***
+
+## History
+* 20161110  Github上に公開
+* 20161110  FX.javaをテストケース出力を行えるまでに実装
+
 
 ## making git repository
 1. git init
