@@ -18,7 +18,7 @@
 1. git branch new_branch_name
 2. git checkout new_branch_name
 3. edit new branch code...
-4. git push -u origin master
+4. git push -u 20161110 master
 5. Pull Request on Github
 6. Merge on Github
 
