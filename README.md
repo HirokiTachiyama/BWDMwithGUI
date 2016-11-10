@@ -1,13 +1,18 @@
 # BWDMwithGUI
+***
+##Boundary Value/Vienna Development Method with Graphical User Interface
 
-Boundary Value/Vienna Development Method with Graphical User Interface
+##making git repository
+*git init
+*git add .
+*git commit -m "nth commit"
+*git remote origin https://github.com/HirokiTachiyama/ProjectName.git
+*git push -u origin master
 
-
-/git init
-/git add .
-/git commit -m "nth commit"
-/git remote origin https://github.com/HirokiTachiyama/ProjectName.git
-/git push -u origin master
+##pushing clone to remote
+*git add .
+*git commmit -m "commit message"
+*git push -u origin master
 
 # マークダウン記法　メモ  
 <http://codechord.com/2012/01/readme-markdown/>
