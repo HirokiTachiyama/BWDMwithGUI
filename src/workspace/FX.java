@@ -1,6 +1,10 @@
 package workspace;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -19,6 +23,8 @@ import org.overturetool.vdmj.syntax.ParserException;
 
 import bwdm.AnalyzedData;
 import bwdm.BoundaryValueAnalyze;
+import bwdm.DecisionTable;
+import bwdm.EvaluationOfConditions;
 
 public class FX extends Application {
 
@@ -32,26 +38,31 @@ public class FX extends Application {
     @Override
     public void start(final Stage primaryStage) {
 
-
     	HBox hbox = new HBox();
         VBox vboxLeft = new VBox();
         VBox vboxRight = new VBox();
         hbox.getChildren().addAll(vboxLeft, vboxRight);
 
-    	final Label information = new Label();
-    	information.setText("hogerafuga");
 
-        Button hogeBtn = new Button();
-        hogeBtn.setText("Select hoge++ specific");
-        final Label hogeLbl = new Label();
-        hogeBtn.setOnAction(new EventHandler<ActionEvent>() {
+        //デシジョンテーブル選択ボタンとラベル
+        Button dtBtn = new Button();
+        dtBtn.setText("Select decision table");
+        final FileChooser fc2 = new FileChooser();
+        fc2.setTitle("Select decision table");
+        final Label dtLbl = new Label();
+        dtBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                File importFile = fc2.showOpenDialog(primaryStage);
+                if (importFile != null) {
+                	dtPath = importFile.getPath().toString();
+                    dtLbl.setText(dtPath);
+                }
             }
         });
-        vboxRight.getChildren().addAll(information);
+        vboxLeft.getChildren().addAll(dtBtn, dtLbl);
 
-
+        //VDMファイル選択ボタンとラベル
         Button vdmBtn = new Button();
         vdmBtn.setText("Select vdm++ specific");
         final FileChooser fc = new FileChooser();
@@ -63,52 +74,35 @@ public class FX extends Application {
                 File importFile = fc.showOpenDialog(primaryStage);
                 if (importFile != null) {
                 	vdmPath = importFile.getPath().toString();
-                    vdmLbl.setText(vdmPath);
+
+                	try {
+    					new AnalyzedData(vdmPath, dtPath, "");
+    				} catch (LexException e) {
+    					// TODO 自動生成された catch ブロック
+    					e.printStackTrace();
+    				} catch (ParserException e) {
+    					// TODO 自動生成された catch ブロック
+    					e.printStackTrace();
+    				}
+
+                	String lblText = new String("");
+                	lblText += "Selected File:" + vdmPath + "\n\n";
+                	try {
+    					lblText += AnalyzedData.getSpecificationAllText();
+    				} catch (FileNotFoundException e) {
+    					// TODO 自動生成された catch ブロック
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					// TODO 自動生成された catch ブロック
+    					e.printStackTrace();
+    				}
+                    vdmLbl.setText(lblText);
                 }
             }
         });
         vboxLeft.getChildren().addAll(vdmBtn, vdmLbl);
 
-        Button dtBtn = new Button();
-        dtBtn.setText("Select decision table");
-        final FileChooser fc2 = new FileChooser();
-        fc2.setTitle("Select decision table");
-        final Label dtLbl = new Label();
-        dtBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                File importFile = fc.showOpenDialog(primaryStage);
-                if (importFile != null) {
-                	dtPath = importFile.getPath().toString();
-                    dtLbl.setText(dtPath);
-                }
-            }
-        });
-        vboxLeft.getChildren().addAll(dtBtn, dtLbl);
-
-
-    	//構文解析実行ボタン
-    	Button analyzeBtn = new Button();
-        final Label analyzeLabel = new Label();
-        analyzeBtn.setText("Do Parsing");
-        analyzeBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	try {
-					new AnalyzedData(vdmPath, dtPath, "");
-				} catch (LexException e) {
-					// TODO 自動生成された catch ブロック
-					e.printStackTrace();
-				} catch (ParserException e) {
-					// TODO 自動生成された catch ブロック
-					e.printStackTrace();
-				}
-            	analyzeLabel.setText(AnalyzedData.getVdmFilePath());
-            }
-        });
-        vboxLeft.getChildren().addAll(analyzeBtn, analyzeLabel);
-
-    	//境界値分析実行ボタン
+    	//境界値分析実行ボタンとラベル
     	Button bvBtn = new Button();
         final Label bvLabel = new Label();
         bvBtn.setText("Do Boundary Value Anlysis");
@@ -119,13 +113,37 @@ public class FX extends Application {
         		new BoundaryValueAnalyze();
         		BoundaryValueAnalyze.printBoundaryValueTable();
         		BoundaryValueAnalyze.printInputValue();
-            	bvLabel.setText(BoundaryValueAnalyze.getInputData().toString());
+            	bvLabel.setText(BoundaryValueAnalyze.getBoundaryValueTableString());
             }
         });
-        vboxLeft.getChildren().addAll(bvBtn, bvLabel);
+        vboxRight.getChildren().addAll(bvBtn, bvLabel);
 
 
+    	//もろもろをやるボタン
+    	Button moromoroBtn = new Button();
+        final Label moromoroLbl = new Label();
+        moromoroBtn.setText("Output Testcases");
+        moromoroBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+        		//入力値をif条件文判定してkey作成
+        		new EvaluationOfConditions();
+        		new DecisionTable(dtPath);
 
+        		String[][] inputData = BoundaryValueAnalyze.getInputData();
+        		ArrayList<String> evaluationResult = EvaluationOfConditions.getEvaluationResult();
+        		HashMap<String, String> booleanSequenceToAction = DecisionTable.getBooleanSequenceToAction();
+        		String str = "";
+
+    			for(int i=0; i<inputData.length; i++){
+    				str += "(" + String.join(",", inputData[i]) + ") --> " +
+    						booleanSequenceToAction.get(evaluationResult.get(i)) + "\n";
+    			}
+
+            	moromoroLbl.setText(str);
+            }
+        });
+        vboxRight.getChildren().addAll(moromoroBtn, moromoroLbl);
 
 
         StackPane root = new StackPane();
