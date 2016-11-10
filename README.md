@@ -10,7 +10,7 @@ Boundary Value/Vienna Development Method with Graphical User Interface
 /git push -u origin master
 
 # マークダウン記法　メモ  
-[参照元URL]: (http://codechord.com/2012/01/readme-markdown/ "参照元URL")
+<http://codechord.com/2012/01/readme-markdown/>
 
 ## 段落
 空行を開ける
