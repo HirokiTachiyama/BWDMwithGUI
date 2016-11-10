@@ -1,6 +1,10 @@
 package bwdm;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,6 +43,7 @@ public class AnalyzedData {
 	//                      "-3<b","b>100","0<b",
 	//                      "c<10","3<c","c>-29","c<-40"};
 	//という感じ
+
 	@SuppressWarnings("rawtypes")
 	private static ArrayList[] ifConditionsJoined;
 	//入力値をifConditionsについてtrue/false判定するときに
@@ -539,6 +544,19 @@ public class AnalyzedData {
     	}
     }
 
+    public static String getSpecificationAllText() throws FileNotFoundException, IOException{
+    	StringBuilder builder = new StringBuilder();
+
+    	try (BufferedReader reader = new BufferedReader(new FileReader(vdmFilePath))) {
+    		String string = reader.readLine();
+    		while (string != null){
+    			builder.append(string + System.getProperty("line.separator"));
+    			string = reader.readLine();
+    		}
+    	}
+
+    	return builder.toString();
+    }
 
 
 

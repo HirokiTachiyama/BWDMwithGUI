@@ -314,6 +314,18 @@ public class BoundaryValueAnalyze {
 			System.out.println();
 		}
 	}
+	
+	public static String getBoundaryValueTableString(){
+		String str = "";
+		for(int i=0; i<AnalyzedData.getFormalArguments().size(); i++){
+			for(int j=0; j<boundaryValueTable[i].size(); j++){
+				str += boundaryValueTable[i].get(j) + " ";
+			}
+			str += "\n";
+		}
+		return str;
+	}
+
 
 	public static void printInputValue(){
 		for(String[] strArray : inputData){
@@ -326,5 +338,20 @@ public class BoundaryValueAnalyze {
 			}
 		}
 	}
+
+	public static String getInputValue(){
+		String str = "";
+		for(String[] strArray : inputData){
+			//System.out.println(strArray.length);
+			switch (strArray.length) {
+				case 1: str += "("+strArray[0]+")\n"; break;
+				case 2: str += "("+strArray[0]+", "+strArray[1]+")\n"; break;
+				case 3: str += "("+strArray[0]+", "+strArray[1]+", "+strArray[2]+")\n"; break;
+			}
+		}
+		return str;
+
+	}
+
 
 }
