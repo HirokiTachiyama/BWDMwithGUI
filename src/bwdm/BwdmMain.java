@@ -1,102 +1,154 @@
 package bwdm;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import org.overturetool.vdmj.lex.LexException;
 import org.overturetool.vdmj.syntax.ParserException;
 
-public class BwdmMain {
+public class BwdmMain extends	 Application{
 
-	public static void main(String[] args) {
-		Boolean fileMakeFlag = false;
+	private String vdmPath, dtPath;
 
-		try {
-			new AnalyzedData("mod2.vdmpp", "mod2.csv", "Cygwin/data/");
-
-			AnalyzedData.printInformation();
-		} catch (LexException | ParserException e) {
-			e.printStackTrace();
-		}
-
-		//抽出した情報から境界値分析、入力値生成
-		new BoundaryValueAnalyze();
-		BoundaryValueAnalyze.printBoundaryValueTable();
-		BoundaryValueAnalyze.printInputValue();
-
-		//入力値をif条件文判定してkey作成
-		new EvaluationOfConditions();
-		EvaluationOfConditions.printEvaluationResult();
-
-		outputBoundaryValueTestcase(fileMakeFlag);
+    public static void main(String[] args) {
+        launch(args);
+    }
 
 
-		System.out.println("／(^o^)＼");
+    @Override
+    public void start(final Stage primaryStage) {
 
-	}
-
-
-	public static void outputBoundaryValueTestcase(Boolean fileOrStandardOutput){
-
-		String[][] inputData = BoundaryValueAnalyze.getInputData();
-		ArrayList<String> evaluationResult = EvaluationOfConditions.getEvaluationResult();
-
-		new DecisionTable(AnalyzedData.getCsvFilePath());
-
-		System.out.println("引数の個数:" + AnalyzedData.getArgumentTypes().size() + "\n");
-		System.out.print("引数型: ");
-		for(int i=0; i<AnalyzedData.getArgumentTypes().size(); i++){
-			System.out.print(AnalyzedData.getArgumentTypes().get(i) + " ");
-		}
-		System.out.println("\n\n入力値 --> 期待出力値");
+    	HBox hbox = new HBox();
+        VBox vboxLeft = new VBox();
+        VBox vboxRight = new VBox();
+        hbox.getChildren().addAll(vboxLeft, vboxRight);
 
 
-		if(fileOrStandardOutput) {
-			FileWriter outputFile=null;
+        //デシジョンテーブル選択ボタンとラベル
+        Button dtBtn = new Button();
+        dtBtn.setText("Select decision table");
+        final FileChooser fc2 = new FileChooser();
+        fc2.setTitle("Select decision table");
+        final Label dtLbl = new Label();
+        dtBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                File importFile = fc2.showOpenDialog(primaryStage);
+                if (importFile != null) {
+                	dtPath = importFile.getPath().toString();
+                    dtLbl.setText(dtPath);
+                }
+            }
+        });
+        vboxLeft.getChildren().addAll(dtBtn, dtLbl);
 
-			//ファイル作成、引数個、引数の書き込み
-			try {
-				outputFile =
-						new FileWriter(new File(AnalyzedData.getVdmFilePath().replace(".vdmpp", "") + "Testcase.csv"));
-				//引数の個数の書き込み
-				outputFile.write("引数の個数:" + AnalyzedData.getArgumentTypes().size() + "\n\n");
-				//引数型の書き込み
-				String tmp = new String();
-				for(int i=0; i<AnalyzedData.getArgumentTypes().size(); i++){
-					tmp = tmp +"第"+(i+1)+"引数:"+ AnalyzedData.getArgumentTypes().get(i) +",";
-				}
-				outputFile.write("引数型:," + tmp + "\n\n");
-				outputFile.write("テストケースNo. 入力データ  --> 期待出力データ" + "\n");
-				System.out.println("ファイル作成成功！");
+        //VDMファイル選択ボタンとラベル
+        Button vdmBtn = new Button();
+        vdmBtn.setText("Select vdm++ specific");
+        final FileChooser fc = new FileChooser();
+        fc.setTitle("Select vdm++ specific");
+        final Label vdmLbl = new Label();
+        vdmBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                File importFile = fc.showOpenDialog(primaryStage);
+                if (importFile != null) {
+                	vdmPath = importFile.getPath().toString();
 
-				for(int i=0; i<inputData.length; i++){
-					try {
-						outputFile.write("No."+(i+1)+","+String.join(",", inputData[i]) + ",-->,\"" +
-								DecisionTable.getBooleanSequenceToAction().get(evaluationResult.get(i)) + "\"\n");
-						System.out.println("ファイル書き込み成功！"+evaluationResult.get(i));
-					} catch (IOException e) {
-						e.printStackTrace();
-						System.out.println("ファイル書き込みしくった！");
-					}
-				}
+                	try {
+    					new AnalyzedData(vdmPath, dtPath, "");
+    				} catch (LexException e) {
+    					// TODO 自動生成された catch ブロック
+    					e.printStackTrace();
+    				} catch (ParserException e) {
+    					// TODO 自動生成された catch ブロック
+    					e.printStackTrace();
+    				}
 
-				outputFile.close();
-				System.out.println("ファイルくろーず成功！");
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println("ファイル作成しくった！");
-			}
-		} else {
-			for(int i=0; i<inputData.length; i++){
-				System.out.println("("+String.join(",", inputData[i]) + ") --> " +
-						DecisionTable.getBooleanSequenceToAction().get(evaluationResult.get(i)));
-			}
-		}
+                	String lblText = new String("");
+                	lblText += "Selected File:" + vdmPath + "\n\n";
+                	try {
+    					lblText += AnalyzedData.getSpecificationAllText();
+    				} catch (FileNotFoundException e) {
+    					// TODO 自動生成された catch ブロック
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					// TODO 自動生成された catch ブロック
+    					e.printStackTrace();
+    				}
+                    vdmLbl.setText(lblText);
+                }
+            }
+        });
+        vboxLeft.getChildren().addAll(vdmBtn, vdmLbl);
+
+    	//境界値分析実行ボタンとラベル
+    	Button bvBtn = new Button();
+        final Label bvLabel = new Label();
+        bvBtn.setText("Do Boundary Value Anlysis");
+        bvBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+        		//抽出した情報から境界値分析、入力値生成
+        		new BoundaryValueAnalyze();
+        		BoundaryValueAnalyze.printBoundaryValueTable();
+        		BoundaryValueAnalyze.printInputValue();
+            	bvLabel.setText(BoundaryValueAnalyze.getBoundaryValueTableString());
+            }
+        });
+        vboxRight.getChildren().addAll(bvBtn, bvLabel);
+
+    	//もろもろをやるボタン
+    	Button moromoroBtn = new Button();
+        final Label moromoroLbl = new Label();
+        moromoroBtn.setText("Output Testcases");
+        moromoroBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+        		//入力値をif条件文判定してkey作成
+        		new EvaluationOfConditions();
+        		new DecisionTable(dtPath);
+
+        		String[][] inputData = BoundaryValueAnalyze.getInputData();
+        		ArrayList<String> evaluationResult = EvaluationOfConditions.getEvaluationResult();
+        		HashMap<String, String> booleanSequenceToAction = DecisionTable.getBooleanSequenceToAction();
+        		String str = "";
+
+    			for(int i=0; i<inputData.length; i++){
+    				str += "(" + String.join(",", inputData[i]) + ") --> " +
+    						booleanSequenceToAction.get(evaluationResult.get(i)) + "\n";
+    			}
+
+            	moromoroLbl.setText(str);
+            }
+        });
+        vboxRight.getChildren().addAll(moromoroBtn, moromoroLbl);
 
 
-	}
+        StackPane root = new StackPane();
+        root.getChildren().addAll(hbox);
+
+        Scene scene = new Scene(root, 300, 250);
+
+        primaryStage.setTitle("BWDMwithGUI");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
 
 }

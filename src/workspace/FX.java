@@ -118,7 +118,6 @@ public class FX extends Application {
         });
         vboxRight.getChildren().addAll(bvBtn, bvLabel);
 
-
     	//もろもろをやるボタン
     	Button moromoroBtn = new Button();
         final Label moromoroLbl = new Label();

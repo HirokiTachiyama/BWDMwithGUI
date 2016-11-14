@@ -4,7 +4,7 @@
 
 ## History
 * 20161110  Github上に公開
-* 20161110  FX.javaをテストケース出力を行えるまでに実装
+* 20161111  FX.javaをテストケース出力を行えるまでに実装
 
 
 ## making git repository
