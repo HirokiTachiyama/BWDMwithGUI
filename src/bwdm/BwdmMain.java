@@ -36,6 +36,7 @@ public class BwdmMain extends	 Application{
     	HBox hbox = new HBox();
         VBox vboxLeft = new VBox();
         VBox vboxRight = new VBox();
+        
         hbox.getChildren().addAll(vboxLeft, vboxRight);
 
 
