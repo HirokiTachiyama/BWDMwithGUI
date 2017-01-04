@@ -423,7 +423,7 @@ public class AnalyzedData {
 	}
 
 
-	public static void printInformation(){
+	public void printInformation(){
 		System.out.println("Files information");
 		System.out.println("vdmFilePath:" + vdmFilePath);
 		System.out.println("csvFilePath:" + csvFilePath+"\n");
