@@ -60,7 +60,6 @@ public class EvaluationOfConditions {
 					if(ifConditions[i][j] == null){ //剰余式なら次の回へ
 						continue;
 					}
-					/*  黒歴史
 					try{
 						String tmp = ifConditions[i][j].get("Surplus").toString();
 						if(ifConditions[i][j] == null){
@@ -73,7 +72,6 @@ public class EvaluationOfConditions {
 						System.out.println("ガッ！");
 						continue;
 					}
-					*/
 					String tmp = ifConditions[i][j].get("LeftHand").toString() +
 								 ifConditions[i][j].get("Symbol").toString() +
 								 ifConditions[i][j].get("RightHand").toString() +
