@@ -6,14 +6,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class DecisionTable {
+public class DecisionTable_old {
 	//+1はそれぞれcondition/actionの文そのものを入れるスペース
 	static String[][] conditionBoolean;
 	static String[][] actionBoolean;
 	private static HashMap<String, String> booleanSequenceToAction;
 	static String[] keyArray;
 
-	public DecisionTable(String fileName){
+	public DecisionTable_old(String fileName){
 		readDecisionTable(fileName);
 		makeBooleanSequenceToAction();
 	}

@@ -244,10 +244,10 @@ public class AnalyzedData {
 		}
 	}
 
-	private int getArgumentsNumberByKind(String argument, String kind) {
+	private int getArgumentsNumberByKind(String _argument, String _kind) {
 		int num=0, s=0;
-		Pattern p = Pattern.compile(kind);
-		Matcher m = p.matcher(argument);
+		Pattern p = Pattern.compile(_kind);
+		Matcher m = p.matcher(_argument);
 		while(m.find(s)){
 			num++;
 			s = m.end();
@@ -567,7 +567,9 @@ public class AnalyzedData {
 	public static String getFormalArgumentsJoined() { return formalArgumentsJoined; }
 	public static ArrayList<String> getFormalArguments(){ return formalArguments; }
 	public static ArrayList<?>[] getIfConditionsJoined(){ return ifConditionsJoined; }
-	public static ArrayList<String> getIfConditionsJoinedInCameForward(){ return ifConditionsJoinedInCameForward; }
+	public static ArrayList<String> getIfConditionsJoinedInCameForward(){
+	    return ifConditionsJoinedInCameForward;
+	}
 	@SuppressWarnings("rawtypes")
 	public static HashMap[][] getIfConditions(){ return ifConditions; }
 	@SuppressWarnings("rawtypes")

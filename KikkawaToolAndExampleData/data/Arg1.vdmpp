@@ -4,17 +4,17 @@ functions
 
 SampleFunction : nat -> seq of char
     SampleFunction(a) ==
---       if(a < 5 & -4 < a) then
---            if( a > 0 ) then
---                "0 < a < 5"
---            else
---                "a < 0"
---      elseif(12 <= a) then
---           if( a < 20 ) then
---         "12 <= a < 20"
---           else
---              "20 <= a"
---      else
+       if (a < 5 and -4 < a) then
+            if( a > 0 ) then
+                "0 < a < 5"
+            else
+                "a < 0"
+      else if(12 <= a) then
+           if( a < 20 ) then
+         "12 <= a < 20"
+           else
+              "20 <= a"
+      else
             "others";
 
 end Sample

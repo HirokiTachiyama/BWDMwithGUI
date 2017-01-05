@@ -19,7 +19,7 @@ import org.overturetool.vdmj.lex.LexTokenReader;
 import org.overturetool.vdmj.syntax.DefinitionReader;
 import org.overturetool.vdmj.syntax.ParserException;
 
-public class AnalyzedData {
+public class AnalyzedData_old {
 
 	//ファイル名、パス
 	private static String directory=null;
@@ -62,7 +62,7 @@ public class AnalyzedData {
 	@SuppressWarnings("rawtypes")
 	private static HashMap[][] preConditions; //条件文を演算子と両辺の3つに分解
 
-	public AnalyzedData(String _vdmFile, String _csvFile, String _directory) throws LexException, ParserException {
+	public AnalyzedData_old(String _vdmFile, String _csvFile, String _directory) throws LexException, ParserException {
 		vdmFileName = _vdmFile;
 		csvFileName = _csvFile;
 		directory   = _directory;
@@ -315,7 +315,7 @@ public class AnalyzedData {
 
 
 		//仮引数毎に整理してifConditionJoined[n]に入れる
-		ArrayList<String> fa = AnalyzedData.getFormalArguments();
+		ArrayList<String> fa = AnalyzedData_old.getFormalArguments();
 		for(int i=0; i<ifConditionsJoinedTmp.size(); i++){
 			for(int j=0; j<fa.size(); j++){
 				//System.out.println(ifConditionsJoinedTmp.get(i)+" "+fa.get(j));

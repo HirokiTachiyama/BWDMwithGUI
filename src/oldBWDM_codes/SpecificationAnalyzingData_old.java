@@ -6,6 +6,6 @@ package oldBWDM_codes;
  *
  */
 
-public class SpecificationAnalyzingData {
+public class SpecificationAnalyzingData_old {
 
 }

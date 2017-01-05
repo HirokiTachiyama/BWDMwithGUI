@@ -5,7 +5,8 @@
 ## History
 * 20161110  Github上に公開
 * 20161111  FX.javaをテストケース出力を行えるまでに実装
-
+* 20170105  テストパッケージの追加、各ディレクトリの名前変更など
+* 20170106  Arg2_chapter3SampleUTFold.vdmppについてテストケースを記述
 
 ## making git repository
 1. git init
