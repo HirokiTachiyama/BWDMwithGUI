@@ -1,4 +1,4 @@
-package bwdm;
+package oldBWDM_codes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +51,6 @@ public class EvaluationOfConditions {
 	}
 
 	private static String evaluate(String[] _inputData, String _condition){
-		@SuppressWarnings("rawtypes")
 		HashMap[][] ifConditions= AnalyzedData.getIfConditions();
 
 		if(_condition.contains("mod")){ //剰余式だったら

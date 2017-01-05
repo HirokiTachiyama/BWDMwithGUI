@@ -1,4 +1,4 @@
-package bwdm;
+package oldBWDM_codes;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,6 @@ public class BoundaryValueAnalyze {
 	 */
 	private static String[][] inputData;
 
-	@SuppressWarnings("unchecked")
 	public BoundaryValueAnalyze() {
 
 		//型境界値、if条件文境界値の登録
@@ -315,7 +314,7 @@ public class BoundaryValueAnalyze {
 			System.out.println();
 		}
 	}
-
+	
 	public static String getBoundaryValueTableString(){
 		String str = "";
 		for(int i=0; i<AnalyzedData.getFormalArguments().size(); i++){

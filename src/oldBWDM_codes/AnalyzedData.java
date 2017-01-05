@@ -1,4 +1,4 @@
-package bwdm;
+package oldBWDM_codes;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -68,8 +68,8 @@ public class AnalyzedData {
 		directory   = _directory;
 		vdmFilePath = directory + vdmFileName;
 		csvFilePath = directory + csvFileName;
-		//System.out.println(vdmFilePath);
-		//System.out.println(csvFilePath);
+		System.out.println(vdmFilePath);
+		System.out.println(csvFilePath);
 
 		//アトリビュートの初期化
 		//但し
@@ -554,25 +554,38 @@ public class AnalyzedData {
     			string = reader.readLine();
     		}
     	}
+
     	return builder.toString();
     }
 
-	public static String getVdmFilePath(){ return vdmFilePath; }
-	public static String getCsvFilePath(){ return csvFilePath; }
-	public static String getArgumentTypesJoined(){ return argumentTypesJoined; }
-	public static ArrayList<String> getArgumentTypes(){ return argumentTypes; }
-	public static int getIntNum() { return intNum; }
-	public static int getNatNum() { return natNum; }
-	public static int getNat1Num() { return nat1Num; }
-	public static String getFormalArgumentsJoined() { return formalArgumentsJoined; }
-	public static ArrayList<String> getFormalArguments(){ return formalArguments; }
-	public static ArrayList<?>[] getIfConditionsJoined(){ return ifConditionsJoined; }
-	public static ArrayList<String> getIfConditionsJoinedInCameForward(){ return ifConditionsJoinedInCameForward; }
-	@SuppressWarnings("rawtypes")
-	public static HashMap[][] getIfConditions(){ return ifConditions; }
-	@SuppressWarnings("rawtypes")
-	public static ArrayList[] getPreConditionsJoined() { return preConditionsJoined; }
-	@SuppressWarnings("rawtypes")
-	public static HashMap[][] getPreConditions(){ return preConditions; }
+
+
+
+	public static String getVdmFilePath(){
+		return vdmFilePath;
+	}
+	public static String getCsvFilePath(){
+		return csvFilePath;
+	}
+	public static ArrayList<String> getArgumentTypes(){
+		return argumentTypes;
+	}
+	public static ArrayList<String> getFormalArguments(){
+		return formalArguments;
+	}
+	public static ArrayList<?>[] getIfConditionsJoined(){
+		return ifConditionsJoined;
+	}
+	public static HashMap[][] getIfConditions(){
+		return ifConditions;
+	}
+	public static HashMap[][] getPreConditions(){
+		return preConditions;
+	}
+	public static ArrayList<String> getIfConditionsJoinedInCameForward(){
+		return ifConditionsJoinedInCameForward;
+	}
+
 
 }
+

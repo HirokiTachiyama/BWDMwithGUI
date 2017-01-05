@@ -17,6 +17,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import oldBWDM_codes.AnalyzedData;
+import oldBWDM_codes.BoundaryValueAnalyze;
+import oldBWDM_codes.DecisionTable;
+import oldBWDM_codes.EvaluationOfConditions;
 
 import org.overturetool.vdmj.lex.LexException;
 import org.overturetool.vdmj.syntax.ParserException;
