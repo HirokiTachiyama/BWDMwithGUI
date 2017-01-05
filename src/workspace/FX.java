@@ -17,14 +17,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import oldBWDM_codes.AnalyzedData_old;
+import oldBWDM_codes.BoundaryValueAnalyze_old;
+import oldBWDM_codes.DecisionTable_old;
+import oldBWDM_codes.EvaluationOfConditions_old;
 
 import org.overturetool.vdmj.lex.LexException;
 import org.overturetool.vdmj.syntax.ParserException;
-
-import bwdm.AnalyzedData;
-import bwdm.BoundaryValueAnalyze;
-import bwdm.DecisionTable;
-import bwdm.EvaluationOfConditions;
 
 public class FX extends Application {
 
@@ -76,7 +75,7 @@ public class FX extends Application {
                 	vdmPath = importFile.getPath().toString();
 
                 	try {
-    					new AnalyzedData(vdmPath, dtPath, "");
+    					new AnalyzedData_old(vdmPath, dtPath, "");
     				} catch (LexException e) {
     					// TODO 自動生成された catch ブロック
     					e.printStackTrace();
@@ -88,7 +87,7 @@ public class FX extends Application {
                 	String lblText = new String("");
                 	lblText += "Selected File:" + vdmPath + "\n\n";
                 	try {
-    					lblText += AnalyzedData.getSpecificationAllText();
+    					lblText += AnalyzedData_old.getSpecificationAllText();
     				} catch (FileNotFoundException e) {
     					// TODO 自動生成された catch ブロック
     					e.printStackTrace();
@@ -110,10 +109,10 @@ public class FX extends Application {
             @Override
             public void handle(ActionEvent event) {
         		//抽出した情報から境界値分析、入力値生成
-        		new BoundaryValueAnalyze();
-        		BoundaryValueAnalyze.printBoundaryValueTable();
-        		BoundaryValueAnalyze.printInputValue();
-            	bvLabel.setText(BoundaryValueAnalyze.getBoundaryValueTableString());
+        		new BoundaryValueAnalyze_old();
+        		BoundaryValueAnalyze_old.printBoundaryValueTable();
+        		BoundaryValueAnalyze_old.printInputValue();
+            	bvLabel.setText(BoundaryValueAnalyze_old.getBoundaryValueTableString());
             }
         });
         vboxRight.getChildren().addAll(bvBtn, bvLabel);
@@ -126,12 +125,12 @@ public class FX extends Application {
             @Override
             public void handle(ActionEvent event) {
         		//入力値をif条件文判定してkey作成
-        		new EvaluationOfConditions();
-        		new DecisionTable(dtPath);
+        		new EvaluationOfConditions_old();
+        		new DecisionTable_old(dtPath);
 
-        		String[][] inputData = BoundaryValueAnalyze.getInputData();
-        		ArrayList<String> evaluationResult = EvaluationOfConditions.getEvaluationResult();
-        		HashMap<String, String> booleanSequenceToAction = DecisionTable.getBooleanSequenceToAction();
+        		String[][] inputData = BoundaryValueAnalyze_old.getInputData();
+        		ArrayList<String> evaluationResult = EvaluationOfConditions_old.getEvaluationResult();
+        		HashMap<String, String> booleanSequenceToAction = DecisionTable_old.getBooleanSequenceToAction();
         		String str = "";
 
     			for(int i=0; i<inputData.length; i++){

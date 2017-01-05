@@ -1,9 +1,9 @@
-package bwdm;
+package oldBWDM_codes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class EvaluationOfConditions {
+public class EvaluationOfConditions_old {
 	/*
 	 * Attention!!!!
 	 * 20160119現在は引数は一つに限定しているので、
@@ -25,11 +25,11 @@ public class EvaluationOfConditions {
 	 * コンストラクタはもろもろで作れなかったから、リファクタリングよろしく
 	 */
 
-	public EvaluationOfConditions(){
+	public EvaluationOfConditions_old(){
 		evaluationResult = new ArrayList<String>();
 		ArrayList<String> ifConditionsJoinedInCameForward
-			= AnalyzedData.getIfConditionsJoinedInCameForward();
-		String[][] inputData = BoundaryValueAnalyze.getInputData();
+			= AnalyzedData_old.getIfConditionsJoinedInCameForward();
+		String[][] inputData = BoundaryValueAnalyze_old.getInputData();
 		for(int i=0; i<inputData.length; i++){//各入力値ごとに
 			String key = "";
 			for(String conditionStr : ifConditionsJoinedInCameForward){//各条件文に対して
@@ -51,8 +51,7 @@ public class EvaluationOfConditions {
 	}
 
 	private static String evaluate(String[] _inputData, String _condition){
-		@SuppressWarnings("rawtypes")
-		HashMap[][] ifConditions= AnalyzedData.getIfConditions();
+		HashMap[][] ifConditions= AnalyzedData_old.getIfConditions();
 
 		if(_condition.contains("mod")){ //剰余式だったら
 			int line=0, column=0;
@@ -120,19 +119,19 @@ public class EvaluationOfConditions {
 						System.exit(-1);
 					}
 					System.out.println("actuallyValueOf_inputData:"+actuallyValueOf_inputData);
-					if(_condition.contains(AnalyzedData.getFormalArguments().get(i))){
-						if(AnalyzedData.getFormalArguments().get(i).equals(leftHand)){
+					if(_condition.contains(AnalyzedData_old.getFormalArguments().get(i))){
+						if(AnalyzedData_old.getFormalArguments().get(i).equals(leftHand)){
 							leftHand = String.valueOf(actuallyValueOf_inputData);
-						} else if(AnalyzedData.getFormalArguments().get(i).equals(rightHand)){
+						} else if(AnalyzedData_old.getFormalArguments().get(i).equals(rightHand)){
 							rightHand = String.valueOf(actuallyValueOf_inputData);
 						}
 					}
 				} else {
 					//入力値が数値の場合
-					if(_condition.contains(AnalyzedData.getFormalArguments().get(i))){
-						if(AnalyzedData.getFormalArguments().get(i).equals(leftHand)){
+					if(_condition.contains(AnalyzedData_old.getFormalArguments().get(i))){
+						if(AnalyzedData_old.getFormalArguments().get(i).equals(leftHand)){
 							leftHand = _inputData[i];
-						} else if(AnalyzedData.getFormalArguments().get(i).equals(rightHand)){
+						} else if(AnalyzedData_old.getFormalArguments().get(i).equals(rightHand)){
 							rightHand = _inputData[i];
 						}
 					}
@@ -196,20 +195,20 @@ public class EvaluationOfConditions {
 							System.out.println("想定外の入力値 処理終了 at EvaluationOFConditions");
 							System.exit(-1);
 					}
-					if(_condition.contains(AnalyzedData.getFormalArguments().get(i))){
-						if(AnalyzedData.getFormalArguments().get(i).equals(leftHand)){
+					if(_condition.contains(AnalyzedData_old.getFormalArguments().get(i))){
+						if(AnalyzedData_old.getFormalArguments().get(i).equals(leftHand)){
 							leftHand = String.valueOf(actuallyValueOf_inputData);
-						} else if(AnalyzedData.getFormalArguments().get(i).equals(rightHand)){
+						} else if(AnalyzedData_old.getFormalArguments().get(i).equals(rightHand)){
 							rightHand = String.valueOf(actuallyValueOf_inputData);
 						}
 					}
 
 				} else {
 					//入力値が数値の場合
-					if(_condition.contains(AnalyzedData.getFormalArguments().get(i))){
-						if(AnalyzedData.getFormalArguments().get(i).equals(leftHand)){
+					if(_condition.contains(AnalyzedData_old.getFormalArguments().get(i))){
+						if(AnalyzedData_old.getFormalArguments().get(i).equals(leftHand)){
 							leftHand = _inputData[i];
-						} else if(AnalyzedData.getFormalArguments().get(i).equals(rightHand)){
+						} else if(AnalyzedData_old.getFormalArguments().get(i).equals(rightHand)){
 							rightHand = _inputData[i];
 						}
 					}

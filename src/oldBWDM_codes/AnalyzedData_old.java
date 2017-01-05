@@ -1,4 +1,4 @@
-package bwdm;
+package oldBWDM_codes;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,7 +19,7 @@ import org.overturetool.vdmj.lex.LexTokenReader;
 import org.overturetool.vdmj.syntax.DefinitionReader;
 import org.overturetool.vdmj.syntax.ParserException;
 
-public class AnalyzedData {
+public class AnalyzedData_old {
 
 	//ファイル名、パス
 	private static String directory=null;
@@ -62,14 +62,14 @@ public class AnalyzedData {
 	@SuppressWarnings("rawtypes")
 	private static HashMap[][] preConditions; //条件文を演算子と両辺の3つに分解
 
-	public AnalyzedData(String _vdmFile, String _csvFile, String _directory) throws LexException, ParserException {
+	public AnalyzedData_old(String _vdmFile, String _csvFile, String _directory) throws LexException, ParserException {
 		vdmFileName = _vdmFile;
 		csvFileName = _csvFile;
 		directory   = _directory;
 		vdmFilePath = directory + vdmFileName;
 		csvFilePath = directory + csvFileName;
-		//System.out.println(vdmFilePath);
-		//System.out.println(csvFilePath);
+		System.out.println(vdmFilePath);
+		System.out.println(csvFilePath);
 
 		//アトリビュートの初期化
 		//但し
@@ -244,10 +244,10 @@ public class AnalyzedData {
 		}
 	}
 
-	private int getArgumentsNumberByKind(String _argument, String _kind) {
+	private int getArgumentsNumberByKind(String argument, String kind) {
 		int num=0, s=0;
-		Pattern p = Pattern.compile(_kind);
-		Matcher m = p.matcher(_argument);
+		Pattern p = Pattern.compile(kind);
+		Matcher m = p.matcher(argument);
 		while(m.find(s)){
 			num++;
 			s = m.end();
@@ -315,7 +315,7 @@ public class AnalyzedData {
 
 
 		//仮引数毎に整理してifConditionJoined[n]に入れる
-		ArrayList<String> fa = AnalyzedData.getFormalArguments();
+		ArrayList<String> fa = AnalyzedData_old.getFormalArguments();
 		for(int i=0; i<ifConditionsJoinedTmp.size(); i++){
 			for(int j=0; j<fa.size(); j++){
 				//System.out.println(ifConditionsJoinedTmp.get(i)+" "+fa.get(j));
@@ -554,27 +554,38 @@ public class AnalyzedData {
     			string = reader.readLine();
     		}
     	}
+
     	return builder.toString();
     }
 
-	public static String getVdmFilePath(){ return vdmFilePath; }
-	public static String getCsvFilePath(){ return csvFilePath; }
-	public static String getArgumentTypesJoined(){ return argumentTypesJoined; }
-	public static ArrayList<String> getArgumentTypes(){ return argumentTypes; }
-	public static int getIntNum() { return intNum; }
-	public static int getNatNum() { return natNum; }
-	public static int getNat1Num() { return nat1Num; }
-	public static String getFormalArgumentsJoined() { return formalArgumentsJoined; }
-	public static ArrayList<String> getFormalArguments(){ return formalArguments; }
-	public static ArrayList<?>[] getIfConditionsJoined(){ return ifConditionsJoined; }
-	public static ArrayList<String> getIfConditionsJoinedInCameForward(){
-	    return ifConditionsJoinedInCameForward;
+
+
+
+	public static String getVdmFilePath(){
+		return vdmFilePath;
 	}
-	@SuppressWarnings("rawtypes")
-	public static HashMap[][] getIfConditions(){ return ifConditions; }
-	@SuppressWarnings("rawtypes")
-	public static ArrayList[] getPreConditionsJoined() { return preConditionsJoined; }
-	@SuppressWarnings("rawtypes")
-	public static HashMap[][] getPreConditions(){ return preConditions; }
+	public static String getCsvFilePath(){
+		return csvFilePath;
+	}
+	public static ArrayList<String> getArgumentTypes(){
+		return argumentTypes;
+	}
+	public static ArrayList<String> getFormalArguments(){
+		return formalArguments;
+	}
+	public static ArrayList<?>[] getIfConditionsJoined(){
+		return ifConditionsJoined;
+	}
+	public static HashMap[][] getIfConditions(){
+		return ifConditions;
+	}
+	public static HashMap[][] getPreConditions(){
+		return preConditions;
+	}
+	public static ArrayList<String> getIfConditionsJoinedInCameForward(){
+		return ifConditionsJoinedInCameForward;
+	}
+
 
 }
+

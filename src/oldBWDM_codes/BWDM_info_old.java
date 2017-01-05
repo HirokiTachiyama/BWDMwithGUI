@@ -1,4 +1,4 @@
-package bwdm;
+package oldBWDM_codes;
 
 /**
  * BWDM 3rd Edition 2016/01/26 version

@@ -1,11 +1,12 @@
-# BWDMwithGUI  
+# BWDMwithGUI
 ## Boundary Value/Vienna Development Method with Graphical User Interface
 ***
 
 ## History
 * 20161110  Github上に公開
 * 20161111  FX.javaをテストケース出力を行えるまでに実装
-
+* 20170105  テストパッケージの追加、各ディレクトリの名前変更など
+* 20170106  Arg2_chapter3SampleUTFold.vdmppについてテストケースを記述
 
 ## making git repository
 1. git init
@@ -14,10 +15,15 @@
 4. git remote origin https://github.com/HirokiTachiyama/ProjectName.git
 5. git push -u origin master
 
-## pushing clone to remote
+## pushing clone to remote(master branch)
 1. git add .
 2. git commmit -m "commit message"
 3. git push -u origin master
+
+## pushing clone to remote(other branch)
+1. git add .
+2. git commmit -m "commit message"
+3. git push -u origin current_branch_name
 
 ## making branch
 1. git branch new_branch_name

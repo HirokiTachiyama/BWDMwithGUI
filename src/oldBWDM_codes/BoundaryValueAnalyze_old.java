@@ -1,9 +1,9 @@
-package bwdm;
+package oldBWDM_codes;
 
 import java.util.ArrayList;
 
 
-public class BoundaryValueAnalyze {
+public class BoundaryValueAnalyze_old {
 
 	@SuppressWarnings("rawtypes")
 	private static ArrayList[] boundaryValueTable;
@@ -14,16 +14,15 @@ public class BoundaryValueAnalyze {
 	 */
 	private static String[][] inputData;
 
-	@SuppressWarnings("unchecked")
-	public BoundaryValueAnalyze() {
+	public BoundaryValueAnalyze_old() {
 
 		//型境界値、if条件文境界値の登録
-		boundaryValueTable = new ArrayList[AnalyzedData.getFormalArguments().size()];
-		for(int i=0; i<AnalyzedData.getFormalArguments().size(); i++){
+		boundaryValueTable = new ArrayList[AnalyzedData_old.getFormalArguments().size()];
+		for(int i=0; i<AnalyzedData_old.getFormalArguments().size(); i++){
 			boundaryValueTable[i] = new ArrayList<String>();
 			makeTypeBoundaryValue(i);
 			//各変数についての条件数だけ
-			for(int j=0; j<AnalyzedData.getIfConditions()[i].length; j++){
+			for(int j=0; j<AnalyzedData_old.getIfConditions()[i].length; j++){
 				makeIfConditionBoundaryValue(i, j);
 			}
 		}
@@ -46,7 +45,7 @@ public class BoundaryValueAnalyze {
 		}
 		inputData = new String[inputDataNumber][];
 		for(int i=0; i<inputDataNumber; i++){
-			inputData[i] = new String[AnalyzedData.getFormalArguments().size()];
+			inputData[i] = new String[AnalyzedData_old.getFormalArguments().size()];
 		}
 
 		//System.out.println("inputDataNumber:"+inputDataNumber);
@@ -57,7 +56,7 @@ public class BoundaryValueAnalyze {
 
 	@SuppressWarnings("unchecked")
 	private void makeTypeBoundaryValue(int _lineNumber){
-		String type = AnalyzedData.getArgumentTypes().get(_lineNumber); //型を取得
+		String type = AnalyzedData_old.getArgumentTypes().get(_lineNumber); //型を取得
 		boundaryValueTable[_lineNumber].add(type+"Min-1");
 		boundaryValueTable[_lineNumber].add(type+"Min");
 		boundaryValueTable[_lineNumber].add(type+"Max");
@@ -87,9 +86,9 @@ public class BoundaryValueAnalyze {
 	//引数_lineNumber番目の_conditionNumber目の条件文から境界値を出す
 	@SuppressWarnings("unchecked")
 	private void makeIfConditionBoundaryValue(int _lineNumber, int _conditionNumber){
-		String leftHand = AnalyzedData.getIfConditions()[_lineNumber][_conditionNumber].get("LeftHand").toString();
-		String symbol = AnalyzedData.getIfConditions()[_lineNumber][_conditionNumber].get("Symbol").toString();
-		String rightHand = AnalyzedData.getIfConditions()[_lineNumber][_conditionNumber].get("RightHand").toString();
+		String leftHand = AnalyzedData_old.getIfConditions()[_lineNumber][_conditionNumber].get("LeftHand").toString();
+		String symbol = AnalyzedData_old.getIfConditions()[_lineNumber][_conditionNumber].get("Symbol").toString();
+		String rightHand = AnalyzedData_old.getIfConditions()[_lineNumber][_conditionNumber].get("RightHand").toString();
 
 		if(symbol.equals("<=") || symbol.equals("<")){
 			//System.out.println("<= or <");
@@ -170,13 +169,13 @@ public class BoundaryValueAnalyze {
 			long center=0,minus1=0, plus1=0;
 			if(isNumber(leftHand)){//左辺が数字
 				center = (long)Integer.parseInt(leftHand) +
-						 (long)Integer.parseInt(AnalyzedData.getIfConditions()[_lineNumber][_conditionNumber].get("Surplus").toString());
+						 (long)Integer.parseInt(AnalyzedData_old.getIfConditions()[_lineNumber][_conditionNumber].get("Surplus").toString());
 				plus1 = center + 1;
 				minus1 = center - 1;
 				boundaryValueTable[_lineNumber].add(Long.toString(center));
 			}else if(isNumber(rightHand)){//右辺が数字
 				center = (long)Integer.parseInt(rightHand) +
-						 (long)Integer.parseInt(AnalyzedData.getIfConditions()[_lineNumber][_conditionNumber].get("Surplus").toString());
+						 (long)Integer.parseInt(AnalyzedData_old.getIfConditions()[_lineNumber][_conditionNumber].get("Surplus").toString());
 				plus1 = center + 1;
 				minus1 = center - 1;
 				boundaryValueTable[_lineNumber].add(Long.toString(center));
@@ -208,12 +207,12 @@ public class BoundaryValueAnalyze {
 	@SuppressWarnings("unchecked")
 	private void makeInputData(){
 		//System.out.println("AnalyzedData.getFormalArguments().size()"+AnalyzedData.getFormalArguments().size());
-		switch(AnalyzedData.getFormalArguments().size()){
+		switch(AnalyzedData_old.getFormalArguments().size()){
 			case 0:
 				//inputData[0][0] = "NONE";
 				//System.out.println("(NONE)");
 				System.out.print("makeInputData default action. argNum:");
-				System.out.println(AnalyzedData.getFormalArguments().size());
+				System.out.println(AnalyzedData_old.getFormalArguments().size());
 				System.out.println("引数が0個です。境界値テスト要るん？");
 				System.exit(-1);
 				break;
@@ -235,7 +234,7 @@ public class BoundaryValueAnalyze {
 				break;
 			default:
 				System.out.print("makeInputData default action. argNum:");
-				System.out.println(AnalyzedData.getFormalArguments().size());
+				System.out.println(AnalyzedData_old.getFormalArguments().size());
 				System.out.println("引数の個数が未対応です。悪しからず！");
 				System.exit(-1);
 				break;
@@ -308,17 +307,17 @@ public class BoundaryValueAnalyze {
     }
 
 	public static void printBoundaryValueTable(){
-		for(int i=0; i<AnalyzedData.getFormalArguments().size(); i++){
+		for(int i=0; i<AnalyzedData_old.getFormalArguments().size(); i++){
 			for(int j=0; j<boundaryValueTable[i].size(); j++){
 				System.out.print(boundaryValueTable[i].get(j)+" ");
 			}
 			System.out.println();
 		}
 	}
-
+	
 	public static String getBoundaryValueTableString(){
 		String str = "";
-		for(int i=0; i<AnalyzedData.getFormalArguments().size(); i++){
+		for(int i=0; i<AnalyzedData_old.getFormalArguments().size(); i++){
 			for(int j=0; j<boundaryValueTable[i].size(); j++){
 				str += boundaryValueTable[i].get(j) + " ";
 			}
