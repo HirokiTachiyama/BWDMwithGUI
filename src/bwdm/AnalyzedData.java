@@ -5,11 +5,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.overturetool.vdmj.Settings;
 import org.overturetool.vdmj.definitions.Definition;
@@ -92,9 +96,8 @@ public class AnalyzedData {
 
 		ifConditionsDeleteOverlapped();
 
-
-
 		//parseConditions("pre"); //事前条件は未実装
+		
 	}
 
 
@@ -203,6 +206,7 @@ public class AnalyzedData {
 
 	//*Joinedを受け取ってargumentTypesをセットする人
 	private void setArgumentTypes(){
+
 		if(argumentTypesJoined.equals("()")) { //()ならすぐおしまい
 			//argumentTypes.add(0, "()");
 			//return;
@@ -558,7 +562,18 @@ public class AnalyzedData {
     }
 
 	public static String getVdmFilePath(){ return vdmFilePath; }
+	public static void printVdmFileText(){
+		try {
+			System.out.println( Files.lines(Paths.get(vdmFilePath), Charset.forName("UTF-8"))
+					.collect(Collectors.joining(System.getProperty("line.separator"))) );
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+	}
 	public static String getCsvFilePath(){ return csvFilePath; }
+
+
 	public static String getArgumentTypesJoined(){ return argumentTypesJoined; }
 	public static ArrayList<String> getArgumentTypes(){ return argumentTypes; }
 	public static int getIntNum() { return intNum; }
