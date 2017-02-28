@@ -17,10 +17,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import oldBWDM_codes.AnalyzedData_old;
-import oldBWDM_codes.BoundaryValueAnalyze_old;
-import oldBWDM_codes.DecisionTable_old;
-import oldBWDM_codes.EvaluationOfConditions_old;
 
 import org.overturetool.vdmj.lex.LexException;
 import org.overturetool.vdmj.syntax.ParserException;
@@ -50,6 +46,7 @@ public class BwdmMain extends Application{
         dtBtn.setText("Select decision table");
         final FileChooser fc2 = new FileChooser();
         fc2.setTitle("Select decision table");
+        fc2.setInitialDirectory(new File("./"));
         final Label dtLbl = new Label();
         dtBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -68,6 +65,7 @@ public class BwdmMain extends Application{
         vdmBtn.setText("Select vdm++ specific");
         final FileChooser fc = new FileChooser();
         fc.setTitle("Select vdm++ specific");
+        fc.setInitialDirectory(new File("./"));
         final Label vdmLbl = new Label();
         vdmBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -77,7 +75,7 @@ public class BwdmMain extends Application{
                 	vdmPath = importFile.getPath().toString();
 
                 	try {
-    					new AnalyzedData_old(vdmPath, dtPath, "");
+    					new AnalyzedData(vdmPath, dtPath, "");
     				} catch (LexException e) {
     					// TODO 自動生成された catch ブロック
     					e.printStackTrace();
@@ -85,11 +83,13 @@ public class BwdmMain extends Application{
     					// TODO 自動生成された catch ブロック
     					e.printStackTrace();
     				}
+                	
+                	AnalyzedData.printInformation();
 
                 	String lblText = new String("");
                 	lblText += "Selected File:" + vdmPath + "\n\n";
                 	try {
-    					lblText += AnalyzedData_old.getSpecificationAllText();
+    					lblText += AnalyzedData.getSpecificationAllText();
     				} catch (FileNotFoundException e) {
     					// TODO 自動生成された catch ブロック
     					e.printStackTrace();
@@ -111,10 +111,10 @@ public class BwdmMain extends Application{
             @Override
             public void handle(ActionEvent event) {
         		//抽出した情報から境界値分析、入力値生成
-        		new BoundaryValueAnalyze_old();
-        		BoundaryValueAnalyze_old.printBoundaryValueTable();
-        		BoundaryValueAnalyze_old.printInputValue();
-            	bvLabel.setText(BoundaryValueAnalyze_old.getBoundaryValueTableString());
+        		new BoundaryValueAnalyze();
+        		BoundaryValueAnalyze.printBoundaryValueTable();
+        		BoundaryValueAnalyze.printInputValue();
+            	bvLabel.setText(BoundaryValueAnalyze.getBoundaryValueTableString());
             }
         });
         vboxRight.getChildren().addAll(bvBtn, bvLabel);
@@ -127,12 +127,12 @@ public class BwdmMain extends Application{
             @Override
             public void handle(ActionEvent event) {
         		//入力値をif条件文判定してkey作成
-        		new EvaluationOfConditions_old();
-        		new DecisionTable_old(dtPath);
+        		new EvaluationOfConditions();
+        		new DecisionTable(dtPath);
 
-        		String[][] inputData = BoundaryValueAnalyze_old.getInputData();
-        		ArrayList<String> evaluationResult = EvaluationOfConditions_old.getEvaluationResult();
-        		HashMap<String, String> booleanSequenceToAction = DecisionTable_old.getBooleanSequenceToAction();
+        		String[][] inputData = BoundaryValueAnalyze.getInputData();
+        		ArrayList<String> evaluationResult = EvaluationOfConditions.getEvaluationResult();
+        		HashMap<String, String> booleanSequenceToAction = DecisionTable.getBooleanSequenceToAction();
         		String str = "";
 
     			for(int i=0; i<inputData.length; i++){
@@ -149,7 +149,7 @@ public class BwdmMain extends Application{
         StackPane root = new StackPane();
         root.getChildren().addAll(hbox);
 
-        Scene scene = new Scene(root, 300, 250);
+        Scene scene = new Scene(root, 640, 480);
 
         primaryStage.setTitle("BWDMwithGUI");
         primaryStage.setScene(scene);
