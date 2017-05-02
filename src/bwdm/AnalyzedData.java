@@ -97,7 +97,7 @@ public class AnalyzedData {
 		ifConditionsDeleteOverlapped();
 
 		//parseConditions("pre"); //事前条件は未実装
-		
+
 	}
 
 
@@ -162,16 +162,16 @@ public class AnalyzedData {
 			String currentToken = ltr_first.nextToken().toString();
 			if(currentToken.equals("functions")){//関数定義が来たら
 				String tmp = ltr_first.nextToken().toString();
-				System.out.println(tmp);
+				//System.out.println(tmp);
 				if( tmp.equals("public") || tmp.equals("private") || tmp.equals("static")){
 					tmp = ltr_first.nextToken().toString();
-					System.out.println(tmp);
+					//System.out.println(tmp);
 					if( tmp.equals("public") || tmp.equals("private") || tmp.equals("static")){
 						functionName = ltr_first.nextToken().toString();
-						System.out.println("IF"+functionName);
+						//System.out.println("IF"+functionName);
 					} else {
 						functionName = tmp;
-						System.out.println("ELSE:"+functionName);
+						//System.out.println("ELSE:"+functionName);
 					}
 				} else {
 					functionName = tmp;
@@ -201,6 +201,28 @@ public class AnalyzedData {
 		}
 		ltr_second.close();
 		formalArgumentsJoined = formalArgs.replace("(", "").replace(")", "");
+
+		/*20170304 構文解析ファイルの生成のために三回目のファイル読み込みを行う。。。
+		LexTokenReader ltr_third = new LexTokenReader(new File(vdmFilePath), Settings.dialect);
+		FileWriter perseFile = null;
+		try {
+			//*.pf = *.perseFile
+			perseFile =
+					new FileWriter(new File(AnalyzedData.getVdmFilePath().replace(".vdmpp", "") + ".pf"));
+			System.out.println("creating persing data file success.");
+
+			while(ltr_third.getLast().toString() != "end" ){ //class定義終了まで
+				perseFile.write(ltr_third.nextToken().toString());
+				System.out.println(ltr_third.nextToken().toString());
+			}
+			perseFile.write("end");
+			ltr_third.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("writing persing data file imcomplete.");
+		}
+*/
 	}
 
 
@@ -221,7 +243,6 @@ public class AnalyzedData {
 			}
 		}else{ //引数が１つの場合
 			argumentTypes.add(0, argumentTypesJoined.replace("(", "").replace(")", ""));
-			return;
 		}
 		intNum  = getArgumentsNumberByKind(argumentTypesJoined, "int");
 		natNum  = getArgumentsNumberByKind(argumentTypesJoined, "nat");
@@ -349,7 +370,7 @@ public class AnalyzedData {
 						int indexOfEqual = ifConditionsJoined[i].get(j).toString().indexOf("=");
 						ifConditions[i][j].put("LeftHand", ifConditionsJoined[i].get(j).toString().substring(0, index));
 						ifConditions[i][j].put("Symbol", "mod");
-						System.out.println(ifConditions[i][j].get("Symbol").toString() + "  " + indexOfEqual);
+						//System.out.println(ifConditions[i][j].get("Symbol").toString() + "  " + indexOfEqual);
 						ifConditions[i][j].put("RightHand", ifConditionsJoined[i].get(j).toString().substring(index + ifConditions[i][j].get("Symbol").toString().length(), indexOfEqual));
 						ifConditions[i][j].put("Surplus", ifConditionsJoined[i].get(j).toString().substring(indexOfEqual+1));
 					} else {

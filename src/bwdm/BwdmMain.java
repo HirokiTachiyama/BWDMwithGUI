@@ -2,6 +2,7 @@ package bwdm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class BwdmMain extends Application{
         dtBtn.setText("Select decision table");
         final FileChooser fc2 = new FileChooser();
         fc2.setTitle("Select decision table");
-        fc2.setInitialDirectory(new File("./"));
+        fc2.setInitialDirectory(new File("KikkawaToolAndExampleData\\data"));
         final Label dtLbl = new Label();
         dtBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -65,7 +66,7 @@ public class BwdmMain extends Application{
         vdmBtn.setText("Select vdm++ specific");
         final FileChooser fc = new FileChooser();
         fc.setTitle("Select vdm++ specific");
-        fc.setInitialDirectory(new File("./"));
+        fc.setInitialDirectory(new File("KikkawaToolAndExampleData\\data"));
         final Label vdmLbl = new Label();
         vdmBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -83,7 +84,7 @@ public class BwdmMain extends Application{
     					// TODO 自動生成された catch ブロック
     					e.printStackTrace();
     				}
-                	
+
                 	AnalyzedData.printInformation();
 
                 	String lblText = new String("");
@@ -119,11 +120,11 @@ public class BwdmMain extends Application{
         });
         vboxRight.getChildren().addAll(bvBtn, bvLabel);
 
-    	//もろもろをやるボタン
-    	Button moromoroBtn = new Button();
-        final Label moromoroLbl = new Label();
-        moromoroBtn.setText("Output Testcases");
-        moromoroBtn.setOnAction(new EventHandler<ActionEvent>() {
+    	//テストケース表示ボタン
+    	Button indicateBtn = new Button();
+        final Label indicateLbl = new Label();
+        indicateBtn.setText("Indicate Testcases");
+        indicateBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
         		//入力値をif条件文判定してkey作成
@@ -140,10 +141,26 @@ public class BwdmMain extends Application{
     						booleanSequenceToAction.get(evaluationResult.get(i)) + "\n";
     			}
 
-            	moromoroLbl.setText(str);
+            	indicateLbl.setText(str);
             }
         });
-        vboxRight.getChildren().addAll(moromoroBtn, moromoroLbl);
+        vboxRight.getChildren().addAll(indicateBtn, indicateLbl);
+
+
+    	//テストケースファイル出力ボタン
+    	Button outputTestcaseBtn = new Button();
+        final Label outputTestcaseLbl = new Label();
+        outputTestcaseBtn.setText("Output Testcases");
+        outputTestcaseBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	outputBoundaryValueTestcase(true);
+
+            	outputTestcaseLbl.setText("Testcase file is written");
+            }
+        });
+        vboxRight.getChildren().addAll(outputTestcaseBtn, outputTestcaseLbl);
+
 
 
         StackPane root = new StackPane();
@@ -155,6 +172,67 @@ public class BwdmMain extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+
+	public static void outputBoundaryValueTestcase(Boolean fileOrStandardOutput){
+
+		String[][] inputData = BoundaryValueAnalyze.getInputData();
+		ArrayList<String> evaluationResult = EvaluationOfConditions.getEvaluationResult();
+
+		new DecisionTable(AnalyzedData.getCsvFilePath());
+
+		System.out.println("引数の個数:" + AnalyzedData.getArgumentTypes().size() + "\n");
+		System.out.print("引数型: ");
+		for(int i=0; i<AnalyzedData.getArgumentTypes().size(); i++){
+			System.out.print(AnalyzedData.getArgumentTypes().get(i) + " ");
+		}
+		System.out.println("\n\n入力値 --> 期待出力値");
+
+
+		if(fileOrStandardOutput) {
+			FileWriter outputFile=null;
+
+			//ファイル作成、引数個、引数の書き込み
+			try {
+				outputFile =
+						new FileWriter(new File(AnalyzedData.getVdmFilePath().replace(".vdmpp", "") + "Testcase.csv"));
+				//引数の個数の書き込み
+				outputFile.write("引数の個数:" + AnalyzedData.getArgumentTypes().size() + "\n\n");
+				//引数型の書き込み
+				String tmp = new String();
+				for(int i=0; i<AnalyzedData.getArgumentTypes().size(); i++){
+					tmp = tmp +"第"+(i+1)+"引数:"+ AnalyzedData.getArgumentTypes().get(i) +",";
+				}
+				outputFile.write("引数型:," + tmp + "\n\n");
+				outputFile.write("テストケースNo. 入力データ  --> 期待出力データ" + "\n");
+				System.out.println("ファイル作成成功！");
+
+				for(int i=0; i<inputData.length; i++){
+					try {
+						outputFile.write("No."+(i+1)+","+String.join(",", inputData[i]) + ",-->,\"" +
+								DecisionTable.getBooleanSequenceToAction().get(evaluationResult.get(i)) + "\"\n");
+						System.out.println("ファイル書き込み成功！"+evaluationResult.get(i));
+					} catch (IOException e) {
+						e.printStackTrace();
+						System.out.println("ファイル書き込みしくった！");
+					}
+				}
+
+				outputFile.close();
+				System.out.println("ファイルくろーず成功！");
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println("ファイル作成しくった！");
+			}
+		} else {
+			for(int i=0; i<inputData.length; i++){
+				System.out.println("("+String.join(",", inputData[i]) + ") --> " +
+						DecisionTable.getBooleanSequenceToAction().get(evaluationResult.get(i)));
+			}
+		}
+
+
+	}
 
 
 }
