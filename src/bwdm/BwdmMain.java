@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.overturetool.vdmj.lex.LexException;
+import org.overturetool.vdmj.syntax.ParserException;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,9 +21,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import workspace.InputDataGeneratorBySyntaxTree;
 
-import org.overturetool.vdmj.lex.LexException;
-import org.overturetool.vdmj.syntax.ParserException;
 
 
 public class BwdmMain extends Application{
@@ -33,7 +35,21 @@ public class BwdmMain extends Application{
 
 
     @Override
-    public void start(final Stage primaryStage) {
+    public void start(final Stage primaryStage) throws ParserException, LexException, IOException {
+
+		//時間計測
+    	
+    	
+		TimeMeasure tm = new TimeMeasure();
+		tm.start();
+
+
+    	InputDataGeneratorBySyntaxTree tree = new InputDataGeneratorBySyntaxTree("KikkawaToolAndExampleData/data/problem.if_else");
+
+
+		tm.finish();
+		tm.printResult();
+
 
     	HBox hbox = new HBox();
         VBox vboxLeft = new VBox();
@@ -112,7 +128,18 @@ public class BwdmMain extends Application{
             @Override
             public void handle(ActionEvent event) {
         		//抽出した情報から境界値分析、入力値生成
-        		new BoundaryValueAnalyze();
+        		try {
+					new BoundaryValueAnalyze();
+				} catch (ParserException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				} catch (LexException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
         		BoundaryValueAnalyze.printBoundaryValueTable();
         		BoundaryValueAnalyze.printInputValue();
             	bvLabel.setText(BoundaryValueAnalyze.getBoundaryValueTableString());
@@ -133,6 +160,8 @@ public class BwdmMain extends Application{
 
         		String[][] inputData = BoundaryValueAnalyze.getInputData();
         		ArrayList<String> evaluationResult = EvaluationOfConditions.getEvaluationResult();
+
+
         		HashMap<String, String> booleanSequenceToAction = DecisionTable.getBooleanSequenceToAction();
         		String str = "";
 
@@ -244,22 +273,24 @@ public class BwdmMain extends Application{
 
 public class BwdmMain {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParserException, LexException, IOException {
 		//時間計測
-		TimeMeasure tm = new TimeMeasure();
-		tm.start();
+//		TimeMeasure tm = new TimeMeasure();
+	//	tm.start();
 
 		Boolean fileMakeFlag = true;
 
 
 
 		try {
+			new AnalyzedData("mod2.vdmpp", "mod2.csv", "KikkawaToolAndExampleData/data/");
+
 			//new AnalyzedData("mod4.vdmpp", "mod4.csv", "Cygwin/data/");
 			//new AnalyzedData("FizzBuzz.vdmpp", "FizzBuzz.csv", "Cygwin/data/");
 			//new AnalyzedData("modtohoho.vdmpp", "modtohoho.csv", "Cygwin/data/");
 			//new AnalyzedData("Nest.vdmpp", "Nest.csv", "Cygwin/data/");
 			//new AnalyzedData("Mix.vdmpp", "Mix.csv", "Cygwin/data/");
-			new AnalyzedData("mix.vdmpp", "mix.csv", "Cygwin/data/");
+			//new AnalyzedData("mix.vdmpp", "mix.csv", "Cygwin/data/");
 			//new AnalyzedData("mod2.vdmpp", "mod2.csv", "Cygwin/data/");
 
 			//new AnalyzedData("mod1.vdmpp", "mod1.csv", "Cygwin/data/");
@@ -296,8 +327,8 @@ public class BwdmMain {
 
 		outputBoundaryValueTestcase(fileMakeFlag);
 
-		tm.finish();
-		tm.printResult();
+		//tm.finish();
+		//tm.printResult();
 
 		System.out.println("／(^o^)＼");
 
@@ -366,5 +397,4 @@ public class BwdmMain {
 
 
 }
-
 */

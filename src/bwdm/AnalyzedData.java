@@ -202,27 +202,6 @@ public class AnalyzedData {
 		ltr_second.close();
 		formalArgumentsJoined = formalArgs.replace("(", "").replace(")", "");
 
-		/*20170304 構文解析ファイルの生成のために三回目のファイル読み込みを行う。。。
-		LexTokenReader ltr_third = new LexTokenReader(new File(vdmFilePath), Settings.dialect);
-		FileWriter perseFile = null;
-		try {
-			//*.pf = *.perseFile
-			perseFile =
-					new FileWriter(new File(AnalyzedData.getVdmFilePath().replace(".vdmpp", "") + ".pf"));
-			System.out.println("creating persing data file success.");
-
-			while(ltr_third.getLast().toString() != "end" ){ //class定義終了まで
-				perseFile.write(ltr_third.nextToken().toString());
-				System.out.println(ltr_third.nextToken().toString());
-			}
-			perseFile.write("end");
-			ltr_third.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("writing persing data file imcomplete.");
-		}
-*/
 	}
 
 

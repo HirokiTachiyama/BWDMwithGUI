@@ -45,9 +45,9 @@ public class DecisionTable {
 			//System.out.println(key);
 		}
 		booleanSequenceToAction.put("Out_of_Bounds", "Undefined Action");
-		//for(int i=0; i<keyArray.length; i++){
-		//	System.out.println(booleanSequenceToAction.get(keyArray[i]));
-		//}
+		for(int i=0; i<keyArray.length; i++){
+			System.out.println(booleanSequenceToAction.get(keyArray[i]));
+		}
 	}
 
 
