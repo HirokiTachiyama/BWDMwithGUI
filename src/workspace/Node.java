@@ -1,7 +1,14 @@
 package workspace;
 
 public abstract class Node {
-	public Node parentNode = null;
+
+
+    /*
+     *parentNodeは絶対IfNodeだからIfNodeにしてもいいかも
+     */
+    public Node parentNode = null;
+
+    
 	public int nodeLevel; //このノードのいる階層 rootが0
 	public static int staticID=0; //ノードを作ったら1つずつ数字が増える
 	public int ID; //このノードのID

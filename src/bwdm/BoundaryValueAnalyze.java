@@ -1,6 +1,10 @@
 package bwdm;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.overturetool.vdmj.lex.LexException;
+import org.overturetool.vdmj.syntax.ParserException;
 
 
 public class BoundaryValueAnalyze {
@@ -14,8 +18,9 @@ public class BoundaryValueAnalyze {
 	 */
 	private static String[][] inputData;
 
+
 	@SuppressWarnings("unchecked")
-	public BoundaryValueAnalyze() {
+	public BoundaryValueAnalyze() throws ParserException, LexException, IOException {
 
 		//型境界値、if条件文境界値の登録
 		boundaryValueTable = new ArrayList[AnalyzedData.getFormalArguments().size()];
@@ -45,6 +50,8 @@ public class BoundaryValueAnalyze {
 			inputDataNumber *= list.size();
 		}
 		inputData = new String[inputDataNumber][];
+
+
 		for(int i=0; i<inputDataNumber; i++){
 			inputData[i] = new String[AnalyzedData.getFormalArguments().size()];
 		}
@@ -53,6 +60,8 @@ public class BoundaryValueAnalyze {
 		//System.out.println("inputData:"+inputData.length+"line");
 		//System.out.println("inputData[0]:"+inputData[0].length+"column");
 		makeInputData();
+
+
 	}
 
 	@SuppressWarnings("unchecked")

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.overturetool.vdmj.Settings;
 import org.overturetool.vdmj.lex.LexException;
@@ -17,31 +18,59 @@ public class IfElseSyntaxTree {
 
 	private static IfNode root;
 	private static BufferedReader if_elseBufferReader;
+	//static ArrayList<conditionAndBoolean>[] conditionAndBooleanTable;
+
+	public static ArrayList<ArrayList<ConditionAndBoolean>> conditionAndBooleanTable;
+	public static ArrayList<String> returnValues = new ArrayList<String>();
 
 	/*
 	 * if_elseファイル作成時、
-	 * 現状は戻り値としてseq of char("を含んでいるもののみ処理しているため)しか
+	 * 現状は戻り値としてseq of char(ダブルクォートを含んでいるもののみ処理しているため)しか
 	 * 対応していない
 	 */
 	/*
 	 * TODO
-	 * 再帰的にreturnNodeを探す、見つけたらそのreturnNodeまでの条件文を表示する関数
+	 * 条件式と真偽値をセットで保持するデータ構造を作る
 	 * if条件式を満たす入力データ生成
 	 */
 
+
+
 	public static void main(String[] args) throws ParserException, LexException, IOException{
-
+		//こいつに満たすべき条件式とその真偽値をいれてく
+		conditionAndBooleanTable = new ArrayList<ArrayList<ConditionAndBoolean>>();
 		if_elseFileGenerate();
-
-		ifElseSyntaxTreeGenerate();
-
+		ifElseSyntaxTreeGenerate("KikkawaToolAndExampleData/data/mod2.if_else");
+		//recursivePrintNodes(root);
+		recursiveReturnNodeFind(root);
+		printConditionAndBooleanTable();
 	} //end main
 
 
+	public IfElseSyntaxTree(String if_elsePath) throws ParserException, LexException, IOException{
+		//public static void main(String[] args) throws ParserException, LexException, IOException{
+
+		//こいつに満たすべき条件式とその真偽値をいれてく
+		conditionAndBooleanTable = new ArrayList<ArrayList<ConditionAndBoolean>>();
+
+		if_elseFileGenerate();
+
+		ifElseSyntaxTreeGenerate(if_elsePath);
+
+		//recursivePrintNodes(root);
+
+		recursiveReturnNodeFind(root);
+
+		//printConditionAndBooleanTable();
+
+
+	} //end main
+
 	//if式構文木を作る
-	private static void ifElseSyntaxTreeGenerate() throws IOException {
-		FileReader if_elseFileReader = new FileReader(new File("KikkawaToolAndExampleData/data/mod2.if_else"));
+	private static void ifElseSyntaxTreeGenerate(String _if_elsePath) throws IOException {
+		//FileReader if_elseFileReader = new FileReader(new File("KikkawaToolAndExampleData/data/mod2.if_else"));
 		//FileReader if_elseFileReader = new FileReader(new File("KikkawaToolAndExampleData/data/syntaxtree.if_else"));
+		FileReader if_elseFileReader = new FileReader(new File(_if_elsePath));
 		if_elseBufferReader = new BufferedReader(if_elseFileReader);
 
 		//rootの準備
@@ -53,11 +82,6 @@ public class IfElseSyntaxTree {
 		root.isTrueNode = null;
 		//これだけでおｋ
 		if_elseBufferReader.close();
-
-		recursivePrintNodes(root);
-
-		recursiveReturnNodeFind(root);
-
 
 	}
 
@@ -106,7 +130,7 @@ public class IfElseSyntaxTree {
 
 
 	//nodeを末端まで再帰的に情報を表示していく
-	private static void recursivePrintNodes(Node node){
+	private void recursivePrintNodes(Node node){
 
 		//親がいなければroot
 		if(node.parentNode == null){
@@ -140,22 +164,48 @@ public class IfElseSyntaxTree {
 	}
 
 
-	private static void recursiveReturnNodeFind(Node node) {
-		if(!node.isIfNode) { //returnNodeならば
-			System.out.print(node.getConditionOrReturnStr() + " ");
-			Node tmpNode = node;
-			while(tmpNode != null){ //下のbreak文が
-				System.out.print(tmpNode.parentNode.getConditionOrReturnStr() + tmpNode.isTrueNode + " ");
-				tmpNode = tmpNode.parentNode;
-				if(tmpNode.parentNode == null) break;
-			}
-			System.out.println();
-		} else {
+	//ReturnNodeの発見とそこに至る為に必要な条件式とその真偽値
+	public static void recursiveReturnNodeFind(Node node) {
+
+		if(node.isIfNode) { //IfNodeならば
 			IfNode ifNode = (IfNode)node;
 			recursiveReturnNodeFind(ifNode.conditionTrueNode);
 			recursiveReturnNodeFind(ifNode.conditionFalseNode);
+		} else { //ReturnNodeならば
+			returnValues.add(node.getConditionOrReturnStr());
+			ArrayList<ConditionAndBoolean> tmp = new ArrayList<ConditionAndBoolean>();
+			//System.out.print(node.getConditionOrReturnStr() + " ");
+			Node tmpNode = node;
+			while(tmpNode != null){ //下のbreak文が
+				//System.out.print(tmpNode.parentNode.getConditionOrReturnStr() + tmpNode.isTrueNode + " ");
+				tmp.add(new ConditionAndBoolean(tmpNode.parentNode.getConditionOrReturnStr(), tmpNode.isTrueNode));
+				tmpNode = tmpNode.parentNode;
+				if(tmpNode.parentNode == null) break;
+			}
+			//System.out.println();
+
+			/*
+			for(ConditionAndBoolean cab : tmp){
+				System.out.println(cab.condition + cab.bool);
+			}
+			*/
+
+			conditionAndBooleanTable.add(tmp);
+			//System.out.println("size"+conditionAndBooleanTable.size());
 		}
 
+	}
+
+	public static void printConditionAndBooleanTable() {
+		int i=0;
+		for(ArrayList<ConditionAndBoolean> array: conditionAndBooleanTable){
+			System.out.print("No." + i + " " + "returnValue:" + returnValues.get(i));
+			for(ConditionAndBoolean cab : array){
+				System.out.print(cab.condition + "," + cab.bool + " ");
+			}
+			System.out.println();
+			i++;
+		}
 	}
 
 
@@ -165,8 +215,8 @@ public class IfElseSyntaxTree {
 	 * 最初のifから終わりのセミコロンまでを抜き出す
 	 */
 	private static void if_elseFileGenerate() throws LexException, ParserException, IOException{
-		new AnalyzedData("KikkawaToolAndExampleData/data/mod2.vdmpp",
-				 "KikkawaToolAndExampleData/data/mod2.csv", "");
+		new AnalyzedData("KikkawaToolAndExampleData/data/problem.vdmpp",
+				 "KikkawaToolAndExampleData/data/problem.csv", "");
 		//AnalyzedData.printInformation();
 		//AnalyzedData.printVdmFileText();
 
@@ -186,7 +236,7 @@ public class IfElseSyntaxTree {
 		//conditionは()の有る無しに関わらず全てのTokenをくっつけて、
 		//最後に()を消去する
 		LexTokenReader ltr = new LexTokenReader
-				(new File("KikkawaToolAndExampleData/data/mod2.vdmpp"),
+				(new File("KikkawaToolAndExampleData/data/problem.vdmpp"),
 				Settings.dialect);
 		String currentToken = ltr.getLast().toString();
 

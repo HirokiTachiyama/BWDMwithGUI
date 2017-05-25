@@ -6,7 +6,7 @@ problem_function : nat -> seq of char
     problem_function(a) ==
         if(a mod 4 = 0) then
             if(a > 92) then 
-      	    	 "96, 100, 104, ..."
+x      	    	 "96, 100, 104, ..."
 	    else
 	          "..., 84, 88, 92"
 	else
